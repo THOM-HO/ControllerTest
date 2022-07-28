@@ -1,54 +1,42 @@
 @isTest
-public class BatchStudentTest {
+public with sharing class CapNhatControllerTest {
+    
     @isTest
-    static void testBatch(){
-        List<Diem__c> diems = new List<Diem__c>();
-        diems = [SELECT Id FROM Diem__c];
-        delete diems;
-        Integer countStudent = [SELECT COUNT() FROM HocSinh__c];
+     static void testCapNhatController() {
+        List<HocSinh__c> students = new List<HocSinh__c>();
+        students = [SELECT Id,TenHocSinh__c FROM HocSinh__c LIMIT 1];
+        ApexPages.currentPage().getParameters().put('id',students[0].Id);
         Test.startTest();
-        BatchStudent batch = new BatchStudent();
-        database.executeBatch(batch);
+        CapNhatController controller = new CapNhatController();
         Test.stopTest();
-        Integer countPoint = [SELECT COUNT() FROM Diem__c ];
-        System.assertEquals( countStudent*3, countPoint);
+        System.assertEquals(controller.cond.objHsCondition.TenHocSinh__c, students[0].TenHocSinh__c);
     }
 
     @isTest
-    static void testBatch1(){
-        List<Diem__c> diems = new List<Diem__c>();
-        diems = [SELECT Id FROM Diem__c];
-        Diem__c diem = diems[0];
-        diem.Diem__c = 2;
-        update diem;
-        Diem__c diem1 = diems[1];
-        diem1.Diem__c = 2;
-        update diem1;
-        Diem__c diem2 = diems[2];
-        diem2.Diem__c = 2;
-        update diem2;
-        Diem__c diem3 = diems[3];
-        delete diem3;
-        Diem__c diem4 = diems[4];
-        delete diem4;
-        Diem__c diem8 = diems[8];
-        delete diem8;
-        Diem__c diem9 = diems[9];
-        delete diem9;
-        Diem__c diem10 = diems[10];
-        delete diem10;
-        Diem__c diem11 = diems[11];
-        delete diem11;
-        // diems
-        Integer countStudent = [SELECT COUNT() FROM HocSinh__c];
-        Test.startTest();
-        BatchStudent batch = new BatchStudent();
-        database.executeBatch(batch);
-        Test.stopTest();
-        
-        Integer countPoint = [SELECT COUNT() FROM Diem__c ];
-        System.assertEquals( countStudent*3, countPoint);
-    }
+    static void testupdateStudent() {
+       List<HocSinh__c> students = new List<HocSinh__c>();
+       students = [SELECT Id,TenHocSinh__c FROM HocSinh__c LIMIT 1];
+       ApexPages.currentPage().getParameters().put('id',students[0].Id);
+       CapNhatController controller = new CapNhatController();
+       controller.cond.objHsCondition.TenHocSinh__c = 'Thom';
+       Test.startTest();
+       controller.updateStudent();
+       Test.stopTest();
+       List<HocSinh__c> students1 = new List<HocSinh__c>();
+       students1 = [SELECT Id,TenHocSinh__c FROM HocSinh__c LIMIT 1];
+       System.assertEquals(students1[0].TenHocSinh__c, 'Thom');
+   }
+
+   @isTest
+    static void testBack() {
+       CapNhatController controller = new CapNhatController();
+       Test.startTest();
+       controller.back();
+       Test.stopTest();
+   }
+
+    
+
     
     private static List<Lop__c> listClass;
     private static List<HocSinh__c> listStudent;
@@ -105,5 +93,4 @@ public class BatchStudentTest {
         objPoint.Mon__c = subject;
         return objPoint;
      }
-
 }

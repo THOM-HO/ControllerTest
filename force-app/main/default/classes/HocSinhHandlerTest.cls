@@ -1,55 +1,48 @@
 @isTest
-public class BatchStudentTest {
+public with sharing class HocSinhHandlerTest {
     @isTest
-    static void testBatch(){
-        List<Diem__c> diems = new List<Diem__c>();
-        diems = [SELECT Id FROM Diem__c];
-        delete diems;
-        Integer countStudent = [SELECT COUNT() FROM HocSinh__c];
-        Test.startTest();
-        BatchStudent batch = new BatchStudent();
-        database.executeBatch(batch);
-        Test.stopTest();
-        Integer countPoint = [SELECT COUNT() FROM Diem__c ];
-        System.assertEquals( countStudent*3, countPoint);
-    }
+    static void testHocSinhHandler() {
+       Test.startTest();
+       Boolean isCheck = HocSinhHandler.isAgeValid( Date.Today(), 18 , 24);
+       Test.stopTest();
+       System.assertEquals(isCheck, false);
+   }
 
-    @isTest
-    static void testBatch1(){
-        List<Diem__c> diems = new List<Diem__c>();
-        diems = [SELECT Id FROM Diem__c];
-        Diem__c diem = diems[0];
-        diem.Diem__c = 2;
-        update diem;
-        Diem__c diem1 = diems[1];
-        diem1.Diem__c = 2;
-        update diem1;
-        Diem__c diem2 = diems[2];
-        diem2.Diem__c = 2;
-        update diem2;
-        Diem__c diem3 = diems[3];
-        delete diem3;
-        Diem__c diem4 = diems[4];
-        delete diem4;
-        Diem__c diem8 = diems[8];
-        delete diem8;
-        Diem__c diem9 = diems[9];
-        delete diem9;
-        Diem__c diem10 = diems[10];
-        delete diem10;
-        Diem__c diem11 = diems[11];
-        delete diem11;
-        // diems
-        Integer countStudent = [SELECT COUNT() FROM HocSinh__c];
+   @isTest
+   static void testHocSinhHandler1() {
+       date myDate = date.newInstance(2003, 4, 21);
+       Test.startTest();
+       Boolean isCheck = HocSinhHandler.isAgeValid(myDate, 18 , 24);
+       Test.stopTest();
+       System.assertEquals(isCheck, true);
+   }
+
+   @isTest
+   static void testHocSinhHandler2() {
+       date myDate = date.newInstance(1990, 4, 21);
+       Test.startTest();
+       Boolean isCheck = HocSinhHandler.isAgeValid(myDate, 18 , 24);
+       Test.stopTest();
+       System.assertEquals(isCheck, false);
+   }
+
+   @isTest
+   static void testClassification() {
+        List<HocSinh__c> students = new List<HocSinh__c>();
+        students = [SELECT Id, DiemTB__c FROM HocSinh__c];
+        List<String> result  =  new List<String>();
         Test.startTest();
-        BatchStudent batch = new BatchStudent();
-        database.executeBatch(batch);
-        Test.stopTest();
-        
-        Integer countPoint = [SELECT COUNT() FROM Diem__c ];
-        System.assertEquals( countStudent*3, countPoint);
-    }
-    
+        for(HocSinh__c student : students){
+           String xeploai = HocSinhHandler.classification(student);
+           result.add(xeploai);
+        }
+       Test.stopTest();
+       System.assertEquals(result[0], 'Yếu');
+       System.assertEquals(result[1], 'Trung Bình');
+       System.assertEquals(result[2], 'Khá');
+       System.assertEquals(result[3], 'Giỏi');
+   }
+
     private static List<Lop__c> listClass;
     private static List<HocSinh__c> listStudent;
     private static List<Diem__c> listPoint;
@@ -63,10 +56,10 @@ public class BatchStudentTest {
 
         listStudent = new List<HocSinh__c>();
         Date birthday = date.newInstance(2012,05,22);
-        listStudent.add(createStudent('Trần ', 'Văn A', true, birthday, 7, 8, 9, listClass[0].Id));
-        listStudent.add(createStudent('Trần ', 'Văn B', true, birthday, 7, 8, 9, listClass[1].Id));
-        listStudent.add(createStudent('Trần ', 'Văn C', true, birthday, 7, 8, 9, listClass[2].Id));
-        listStudent.add(createStudent('Trần ', 'Văn D', true, birthday, 7, 8, 9, listClass[3].Id));
+        listStudent.add(createStudent('Trần ', 'Văn A', true, birthday, 2, 2, 2, listClass[0].Id));
+        listStudent.add(createStudent('Trần ', 'Văn B', true, birthday, 5, 5, 5, listClass[1].Id));
+        listStudent.add(createStudent('Trần ', 'Văn C', true, birthday, 7, 7, 7, listClass[2].Id));
+        listStudent.add(createStudent('Trần ', 'Văn D', true, birthday, 9, 9, 9, listClass[3].Id));
         listStudent.add(createStudent('Trần ', 'Văn E', true, birthday, 7, 8, 9, listClass[1].Id));
         insert listStudent;
 

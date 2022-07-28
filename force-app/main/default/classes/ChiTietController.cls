@@ -105,10 +105,8 @@ public with sharing class ChiTietController {
 		ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR, '====Line: ' + ex.getLineNumber()));
 		ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR, '====StackTrace: ' + ex.getStackTraceString()));
 	}
-    class Condition {
-		public HocSinh__c objHsCondition {get; set;}
-		public String lopId {get; set;}
-        
+    public class Condition {
+		public HocSinh__c objHsCondition {get; set;}        
 		public Condition () {
 			objHsCondition = new HocSinh__c();
 		}

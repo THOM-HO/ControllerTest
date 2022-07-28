@@ -21,7 +21,7 @@ private String page='';
     public CapNhatController() {
         String idStudent = ApexPages.currentPage().getParameters().get('id'); //id của hs cần cập nhật
         page = ApexPages.currentPage().getParameters().get('page'); 
-        cond= new Condition(); 
+        cond = new Condition(); 
         initData( idStudent);
     }
     
@@ -37,7 +37,7 @@ private String page='';
         try {
         HocSinh__c hs= new HocSinh__c();
          			hs=[SELECT  MaHocSinh__c,HoHocSinh__c,TenHocSinh__c,NgaySinh__c,GioiTinh__c, Diem1__c, Diem2__c,Diem3__c
-					    FROM HocSinh__C
+					    FROM HocSinh__c
 					    WHERE Id = :param ];
             cond.objHsCondition.TenHocSinh__c = hs.TenHocSinh__c;
             cond.objHsCondition.HoHocSinh__c =hs.HoHocSinh__c;
@@ -75,15 +75,15 @@ private String page='';
 * @modified:2022/07/01 Ho Thi Thom    
 */
     public PageReference updateStudent(){
-        HocSinh__c student= new HocSinh__c();
-        student.Id= cond.objHsCondition.Id;
-        student.TenHocSinh__c= cond.objHsCondition.TenHocSinh__c;
+        HocSinh__c student = new HocSinh__c();
+        student.Id = cond.objHsCondition.Id;
+        student.TenHocSinh__c = cond.objHsCondition.TenHocSinh__c;
         student.HoHocSinh__c =  cond.objHsCondition.HoHocSinh__c;
-        student.GioiTinh__c= cond.objHsCondition.GioiTinh__c;
-        student.NgaySinh__c= cond.objHsCondition.NgaySinh__c;
-        student.Diem1__c=cond.objHsCondition.Diem1__c;
-        student.Diem2__c=cond.objHsCondition.Diem2__c;
-        student.Diem3__c=cond.objHsCondition.Diem3__c;
+        student.GioiTinh__c = cond.objHsCondition.GioiTinh__c;
+        student.NgaySinh__c = cond.objHsCondition.NgaySinh__c;
+        student.Diem1__c = cond.objHsCondition.Diem1__c;
+        student.Diem2__c = cond.objHsCondition.Diem2__c;
+        student.Diem3__c = cond.objHsCondition.Diem3__c;
         
         update student;
         
@@ -107,10 +107,8 @@ private String page='';
 		ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR, '====StackTrace: ' + ex.getStackTraceString()));
 	}
     
-    class Condition {
+    public class Condition {
 		public HocSinh__c objHsCondition {get; set;}
-		public String lopId {get; set;}
-        
 		public Condition () {
 			objHsCondition = new HocSinh__c();
 		}    
